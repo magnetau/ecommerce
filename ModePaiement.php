@@ -1,4 +1,7 @@
-
+<?php
+include './connection.php';
+session_start();
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -14,7 +17,7 @@
 
         <div id="main_container">
 
-            <div id="header">
+            <div id="header">mo
 
                 <div class="top_right">
 
@@ -57,6 +60,8 @@
                         <li><a href="#" class="nav">Shipping </a></li>
                         <li class="divider"></li>
                         <li><a href="contact.html" class="nav">Contact Us</a></li>
+                        <li class="divider"></li>
+                        <li><a href="logout.php" class="nav">log out</a></li>
 
                     </ul>
 
@@ -112,17 +117,27 @@
 
                 <div class="center_content">
 
-                    
-                    <div class="title_box">Sign up</div>  
-                    <div class="border_box">
-                        <form method="post" action="create_user.php">
-                        <input type="text" name="login" class="newsletter_input" placeholder="login" required/>
-                        <input type="password" name="mdp" class="newsletter_input" placeholder="password" required/>
-                        <input type="submit" value="Sing up" />
-                        </form>
-                    </div> 
+                    <div class="oferta">
+                       
+                        <div class="oferta_details">
+                            <div class="oferta_text">
+                             <font color="#000099" size="3px"> 
+						<a href="Remerciment.php">	<button  > Mode paiement avec point de fidelite </button></a>
+						</br></br>
+						<a href="Remerci.php">	<button  > Mode paiement normal</button></a>
+							
+                             </font>
+                           
+                            </div>
+                            </div>
 
-                   
+
+                    </div>
+
+
+                    
+
+
                 </div><!-- end of center content -->
 
 
@@ -134,6 +149,7 @@
                         <input type="text" name="newsletter" class="newsletter_input" value="keyword"/>
                         <a href="#" class="join">search</a>
                     </div>  
+					
 
 
 
@@ -142,13 +158,25 @@
                         <div class="title_box">Shopping cart</div>
 
                         <div class="cart_details">
-                            0 items <br />
+                            <?php $count=0;
+                            $prix=0;
+                            if (!isset($_SESSION['id_user'])) {
+                       echo $count;
+                    }else{$user=$_SESSION['id_user'];
+                        $res =$db->query("SELECT * FROM chart WHERE id_user='$user'");
+                        
+                    while ($row = $res->fetch()) {$count++;
+                    $id_prod=$row['id_produit'];
+                    $res1 =$db->query("SELECT * FROM produit WHERE id='$id_prod'");
+                    while ($row1 = $res1->fetch()) {$prix+=$row1['prix'];}
+                    }
+                    echo $count;} ?>  items <br />
                             <span class="border_cart"></span>
-                            Total: <span class="price">0$</span>
+                            Total: <span class="price"><?php echo $prix; ?>$</span>
                         </div>
 
-                        <div class="cart_icon"><a href="#" title=""><img src="images/shoppingcart.png" alt="" title="" width="35" height="35" border="0" /></a></div>
-
+                        <div class="cart_icon"><a title="" href="chart.php"><img src="images/shoppingcart.png" alt="" title="" width="35" height="35" border="0" /></a></div>
+                          
                     </div>
 
 

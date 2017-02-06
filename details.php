@@ -87,7 +87,7 @@ $req = "SELECT * FROM produit WHERE id='$prod'";
 
 
                 <div id="logo">
-                    <a href="index.html"><img src="images/logo.png" alt="" title="" border="0" width="182" height="85" /></a>
+                    <a href="index.php"><img src="images/logo.png" alt="" title="" border="0" width="182" height="85" /></a>
                 </div>
 
 
@@ -99,7 +99,7 @@ $req = "SELECT * FROM produit WHERE id='$prod'";
 
                 <div id="menu_tab">
                     <ul class="menu">
-                        <li><a href="index.html" class="nav">  Home </a></li>
+                        <li><a href="index.php" class="nav">  Home </a></li>
                         <li class="divider"></li>
                         <li><a href="#" class="nav">Products</a></li>
                         <li class="divider"></li>
@@ -239,10 +239,10 @@ $req = "SELECT * FROM produit WHERE id='$prod'";
                     }
                     echo $count;} ?> items <br />
                             <span class="border_cart"></span>
-                            Total: <span class="price"><?php echo $prix; ?>$</span>
+                            Total: <span class="price"><?php echo $prix; $_SESSION['prix']=$prix;?>$</span>
                         </div>
 
-                        <div class="cart_icon"><a href="#" title=""><img src="images/shoppingcart.png" alt="" title="" width="35" height="35" border="0" /></a></div>
+                        <div class="cart_icon"><a href="chart.php" title=""><img src="images/shoppingcart.png" alt="" title="" width="35" height="35" border="0" /></a></div>
 
                     </div>
 
@@ -296,7 +296,7 @@ $req = "SELECT * FROM produit WHERE id='$prod'";
                 </div>
 
                 <div class="right_footer">
-                    <a href="index.html">home</a>
+                    <a href="index.php">home</a>
                     <a href="details.html">about</a>
                     <a href="details.html">sitemap</a>
                     <a href="details.html">rss</a>

@@ -1,4 +1,8 @@
-
+<?php
+include './connection.php';
+session_start();
+$user = $_SESSION['id_user'];
+?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
@@ -9,6 +13,7 @@
         <link rel="stylesheet" type="text/css" href="iecss.css" />
         <![endif]-->
         <script type="text/javascript" src="js/boxOver.js"></script>
+
     </head>
     <body>
 
@@ -57,7 +62,8 @@
                         <li><a href="#" class="nav">Shipping </a></li>
                         <li class="divider"></li>
                         <li><a href="contact.html" class="nav">Contact Us</a></li>
-
+                        <li class="divider"></li>
+                        <li><a href="logout.php" class="nav">log out</a></li>
                     </ul>
 
                 </div><!-- end of menu tab -->
@@ -111,18 +117,30 @@
 
 
                 <div class="center_content">
+                    <div>
 
-                    
-                    <div class="title_box">Sign up</div>  
-                    <div class="border_box">
-                        <form method="post" action="create_user.php">
-                        <input type="text" name="login" class="newsletter_input" placeholder="login" required/>
-                        <input type="password" name="mdp" class="newsletter_input" placeholder="password" required/>
-                        <input type="submit" value="Sing up" />
-                        </form>
-                    </div> 
+                        <div class="center_title_bar">Le pannier</div>
+                        <?php
+                        $res = $db->query("SELECT p.id,p.prix,p.img,p.nom FROM produit p,chart c where p.id=c.id_produit and c.id_user=" . $user);
+                        while ($row = $res->fetch()) {
+                            ?>
+                            <div class="prod_box">
 
-                   
+                                <div class="center_prod_box">            
+                                    <div class="product_title"><a href="details.php?id=<?php echo $row['id']; ?>"><?php echo $row['nom']; ?></a></div>
+                                    <div class="product_img"><a href="details.php?id=<?php echo $row['id']; ?>"><img src="images/<?php echo $row['img']; ?>" alt="" title="" border="0" width="100" height="80" /></a></div>
+                                    <div class="prod_price"><span class="price"><?php echo $row['prix']; ?>$</span></div>                        
+                                </div>
+
+                                <div class="prod_details_tab">
+
+                                    <a href="deleteItem.php?id=<?php echo $row['id']; ?>" class="prod_details">Delete item</a>            
+                                </div>                     
+                            </div>
+                        <?php } ?>    
+                    </div>
+                    <div><a href="ModePaiement.php" class="prod_buy">Acheter</a></div>
+
                 </div><!-- end of center content -->
 
 
@@ -142,12 +160,31 @@
                         <div class="title_box">Shopping cart</div>
 
                         <div class="cart_details">
-                            0 items <br />
+                            <?php
+                            $count = 0;
+                            $prix = 0;
+                            if (!isset($_SESSION['id_user'])) {
+                                echo $count;
+                            } else {
+                                $user = $_SESSION['id_user'];
+                                $res = $db->query("SELECT * FROM chart WHERE id_user='$user'");
+
+                                while ($row = $res->fetch()) {
+                                    $count++;
+                                    $id_prod = $row['id_produit'];
+                                    $res1 = $db->query("SELECT * FROM produit WHERE id='$id_prod'");
+                                    while ($row1 = $res1->fetch()) {
+                                        $prix+=$row1['prix'];
+                                    }
+                                }
+                                echo $count;
+                            }
+                            ?> items <br />
                             <span class="border_cart"></span>
-                            Total: <span class="price">0$</span>
+                            Total: <span class="price"><?php echo $prix; ?>$</span>
                         </div>
 
-                        <div class="cart_icon"><a href="#" title=""><img src="images/shoppingcart.png" alt="" title="" width="35" height="35" border="0" /></a></div>
+                        <div class="cart_icon"><a href="chart.php" title=""><img src="images/shoppingcart.png" alt="" title="" width="35" height="35" border="0" /></a></div>
 
                     </div>
 
@@ -215,6 +252,3 @@
         <!-- end of main_container -->
     </body>
 </html>
-
-
-
